@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System.IdentityModel.Tokens.Jwt;
 using System.Diagnostics;
 using Microsoft.IdentityModel.Logging;
+using System;
 
 namespace Fundamentos.IS4.Frete.Fretes
 {
@@ -37,8 +38,9 @@ namespace Fundamentos.IS4.Frete.Fretes
             services.AddAuthentication(defaultScheme: "Bearer")
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://localhost:5001";
-                    options.Audience = "api_frete";
+                    options.Authority = Configuration["IdentityServer4:Authority"];
+                    options.Audience = Configuration["IdentityServer4:Audience"];
+                    options.RequireHttpsMetadata = Convert.ToBoolean(Configuration["IdentityServer4:RequireHttpsMetadata"]);
                 });
 
             services.AddDbContext<FreteContext>(options => options.UseInMemoryDatabase("frete-context"));
@@ -71,6 +73,9 @@ namespace Fundamentos.IS4.Frete.Fretes
 
             services.AddAuthorization(options =>
             {
+                //options.AddPolicy("Gerente", policy =>
+                //    policy.RequireClaim("cargo", "Gerente"));
+
                 options.AddPolicy("Gerente", policy =>
                     policy.RequireClaim("cargo", "Gerente"));
 

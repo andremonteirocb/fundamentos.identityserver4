@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System;
 
 namespace Fundamentos.IS4.Loja.Site
 {
@@ -41,7 +43,8 @@ namespace Fundamentos.IS4.Loja.Site
             if (Debugger.IsAttached)
                 IdentityModelEventSource.ShowPII = true;
 
-            services.AddAuthentication(options =>
+            services
+                .AddAuthentication(options =>
                 {
                     options.DefaultScheme = "Cookies";
                     options.DefaultChallengeScheme = "oidc";
@@ -49,14 +52,15 @@ namespace Fundamentos.IS4.Loja.Site
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://localhost:5001";
-                    options.ClientId = "eb1d691efa2746488358b53afda842d6";
-                    options.ClientSecret = "5b5a0d69675b4d3e96ffca0146daaf6e";
-                    options.ResponseType = "code";
+                    options.Authority = Configuration["IdentityServer4:Authority"];
+                    options.ClientId = Configuration["IdentityServer4:ClientId"];
+                    options.ClientSecret = Configuration["IdentityServer4:ClientSecret"];
+                    options.RequireHttpsMetadata = Convert.ToBoolean(Configuration["IdentityServer4:RequireHttpsMetadata"]);
+                    options.SaveTokens = true;
+                    options.ResponseType = OpenIdConnectResponseType.Code;
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("api_frete"); //protected resources 
-                    options.SaveTokens = true;
 
                     //recupera as claims do usuário
                     //recupera as claims extras presentes no protected resources
