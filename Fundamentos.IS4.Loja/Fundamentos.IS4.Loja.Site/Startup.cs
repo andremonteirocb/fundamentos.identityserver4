@@ -52,15 +52,15 @@ namespace Fundamentos.IS4.Loja.Site
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = Configuration["IdentityServer4:Authority"];
-                    options.ClientId = Configuration["IdentityServer4:ClientId"];
-                    options.ClientSecret = Configuration["IdentityServer4:ClientSecret"];
-                    options.RequireHttpsMetadata = Convert.ToBoolean(Configuration["IdentityServer4:RequireHttpsMetadata"]);
+                    options.Authority = Configuration["Keycloak:Authority"];
+                    options.ClientId = Configuration["Keycloak:ClientId"];
+                    options.ClientSecret = Configuration["Keycloak:ClientSecret"];
+                    options.RequireHttpsMetadata = Convert.ToBoolean(Configuration["Keycloak:RequireHttpsMetadata"]);
                     options.SaveTokens = true;
                     options.ResponseType = OpenIdConnectResponseType.Code;
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
-                    options.Scope.Add("api_frete"); //protected resources 
+                    //options.Scope.Add("api_frete"); //protected resources 
 
                     //recupera as claims do usuário
                     //recupera as claims extras presentes no protected resources

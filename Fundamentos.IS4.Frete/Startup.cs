@@ -38,9 +38,9 @@ namespace Fundamentos.IS4.Frete.Fretes
             services.AddAuthentication(defaultScheme: "Bearer")
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = Configuration["IdentityServer4:Authority"];
-                    options.Audience = Configuration["IdentityServer4:Audience"];
-                    options.RequireHttpsMetadata = Convert.ToBoolean(Configuration["IdentityServer4:RequireHttpsMetadata"]);
+                    options.Authority = Configuration["Keycloak:Authority"];
+                    options.Audience = Configuration["Keycloak:Audience"];
+                    options.RequireHttpsMetadata = Convert.ToBoolean(Configuration["Keycloak:RequireHttpsMetadata"]);
                 });
 
             services.AddDbContext<FreteContext>(options => options.UseInMemoryDatabase("frete-context"));
